@@ -18,6 +18,7 @@ class Money private (value: Double) {
       case "euro" => Money.of(value * CurrencyUnitEuro.rate)
       case "won" => Money.of(value * CurrencyUnitWon.rate)
       case "chinaYen" => Money.of(value * CurrencyUnitChinaYen.rate)
+      case _ => throw new IllegalArgumentException("利用できない通貨です")
     }
   }
 
