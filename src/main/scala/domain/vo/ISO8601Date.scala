@@ -2,7 +2,7 @@ package com.example
 package domain.vo
 
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.{Date, TimeZone}
 
 /**
  * ISO8601形式の日付オブジェクト
@@ -14,8 +14,8 @@ import java.util.Date
  */
 class ISO8601Date private(dateEither: Either[Date, String]) {
 
-  private val FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-  private val SIMPLE_DATE_FORMAT = new SimpleDateFormat(FORMAT_ISO8601)
+  private val SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+  SIMPLE_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"))
 
   /**
    * Leftに初期化された日付から文字列に変換する
@@ -44,6 +44,18 @@ class ISO8601Date private(dateEither: Either[Date, String]) {
         }
       }
       case Left(value) => throw new IllegalArgumentException("Stringを使って初期化してください")
+    }
+  }
+
+  /**
+   * 引数とオブジェクトを比較する
+   * @param date
+   * @return
+   */
+  def isAfter(date: ISO8601Date): Boolean = {
+    val standard = this.dateEither match {
+      case Left(value) => this.toString()
+      case Right(value) => this.toDate()
     }
   }
 

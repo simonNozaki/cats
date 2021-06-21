@@ -1,6 +1,8 @@
 package com.example
 package domain.vo
 
+import java.util.Date
+
 /**
  * カンバン進捗オブジェクト。
  */
@@ -18,8 +20,15 @@ class BacklogItem private (
    * @return
    */
   def makeDone(): BacklogItem = {
-    // ステータス書き換える
-    return this
+    // ステータス書き換える, 日付も更新
+    return new BacklogItem(
+      this.id,
+      this.title,
+      this.description,
+      StatusDone.status,
+      this.createdAt,
+      ISO8601Date.fromDate(new Date())
+    )
   }
 }
 
@@ -47,21 +56,21 @@ sealed abstract class StatusEnum {
 }
 
 /**
- * バックログアイテムステータス: Todo
+ * バックログアイテムステータス: 未対応
  */
 private case object StatusTodo extends StatusEnum {
   override val status: String = "todo"
 }
 
 /**
- * バックログアイテムステータス: wip
+ * バックログアイテムステータス: 対応中
  */
 private case object StatusWorkInProgress extends StatusEnum {
   override val status: String = "wip"
 }
 
 /**
- * バックログアイテムステータス: done
+ * バックログアイテムステータス: 完了
  */
 private case object StatusDone extends StatusEnum {
   override val status: String = "done"
