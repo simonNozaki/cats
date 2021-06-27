@@ -26,7 +26,7 @@ class ISO8601Date private(dateEither: Either[Date, String]) {
       case Left(value) => {
         return SIMPLE_DATE_FORMAT.format(value)
       }
-      case Right(value) => throw new IllegalArgumentException("Dateインスタンスで初期化してください")
+      case Right(_) => throw new IllegalArgumentException("Dateインスタンスで初期化してください")
     }
   }
 
@@ -43,7 +43,7 @@ class ISO8601Date private(dateEither: Either[Date, String]) {
           case e: Exception => return null
         }
       }
-      case Left(value) => throw new IllegalArgumentException("Stringを使って初期化してください")
+      case Left(_) => throw new IllegalArgumentException("Stringを使って初期化してください")
     }
   }
 
@@ -52,11 +52,13 @@ class ISO8601Date private(dateEither: Either[Date, String]) {
    * @param date
    * @return
    */
-  def isAfter(date: ISO8601Date): Boolean = {
+  def isAfter(date: Date): Boolean = {
     val standard = this.dateEither match {
-      case Left(value) => this.toString()
-      case Right(value) => this.toDate()
+      case Left(value) => value
+      case Right(_) => this.toDate()
     }
+
+    return standard.after(date)
   }
 
 }
