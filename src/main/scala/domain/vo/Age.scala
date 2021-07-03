@@ -1,21 +1,16 @@
-package com.example
 package domain.vo
 
 /**
- * 年齢オブジェクト
- * 値クラス
+ * 年齢に関する知識を表現する。
+ * @param value
  */
-class Age (val value: Int) extends AnyVal {
+class Age (value: Int) {
 
-  // ガード節
+  // ガード
   if (this.value < 0) {
-    throw new IllegalArgumentException("年齢は0以上でなければなりません")
+    throw new IllegalArgumentException("年齢は0歳以上です。")
   }
 
-  /**
-   * 1歳年をとる
-   * @return
-   */
   def getOld(): Age = {
     return new Age(this.value + 1)
   }
